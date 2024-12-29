@@ -335,11 +335,13 @@ function rotateMatrix(matrix) {
   const rotated = Array(n)
     .fill()
     .map(() => Array(n).fill(0));
+
   for (let i = 0; i < n; i += 1) {
     for (let j = 0; j < n; j += 1) {
       rotated[j][n - 1 - i] = matrix[i][j];
     }
   }
+
   return rotated;
 }
 
@@ -358,7 +360,17 @@ function rotateMatrix(matrix) {
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
 function sortByAsc(arr) {
-  return arr.slice().sort((a, b) => a - b);
+  const sorted = [...arr];
+  for (let i = 0; i < sorted.length; i += 1) {
+    for (let j = 0; j < sorted.length - i - 1; j += 1) {
+      if (sorted[j] > sorted[j + 1]) {
+        const temp = sorted[j];
+        sorted[j] = sorted[j + 1];
+        sorted[j + 1] = temp;
+      }
+    }
+  }
+  return sorted;
 }
 
 /**
