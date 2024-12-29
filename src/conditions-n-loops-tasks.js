@@ -42,12 +42,8 @@ function isPositive(number) {
  *  -0.1, 0, 0.2  => 0.2
  */
 function getMaxNumber(a, b, c) {
-  if (a >= b && a >= c) {
-    return a;
-  }
-  if (b >= a && b >= c) {
-    return b;
-  }
+  if (a >= b && a >= c) return a;
+  if (b >= c) return b;
   return c;
 }
 
@@ -96,7 +92,7 @@ function canQueenCaptureKing(queen, king) {
  *  3, 0, 3   => false
  */
 function isIsoscelesTriangle(a, b, c) {
-  if (a <= 0 || b <= 0 || c <= 0) {
+  if (a <= 0 || b <= 0 || c <= 0 || a + b <= c || b + c <= a || a + c <= b) {
     return false;
   }
   return a === b || b === c || a === c;
@@ -117,6 +113,9 @@ function isIsoscelesTriangle(a, b, c) {
  *  26  => XXVI
  */
 function convertToRomanNumerals(num) {
+  if (num < 1 || num > 39) {
+    return 'Input out of range';
+  }
   const romanNumerals = [
     { value: 1000, numeral: 'M' },
     { value: 900, numeral: 'CM' },
@@ -134,7 +133,6 @@ function convertToRomanNumerals(num) {
   ];
 
   let remainingNum = num;
-
   let result = '';
 
   romanNumerals.forEach(({ value, numeral }) => {
