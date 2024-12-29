@@ -306,33 +306,46 @@ function getBalanceIndex(arr) {
  *          [10, 9,  8,  7]
  *        ]
  */
-function getSpiralMatrix(n) {
-  const result = Array.from({ length: n }, () => Array(n).fill(0));
+function getSpiralMatrix(size) {
+  const matrix = Array.from({ length: size }, () => Array(size).fill(0));
+
   let top = 0;
-  let bottom = n - 1;
+  let bottom = size - 1;
   let left = 0;
-  let right = n - 1;
-  let num = 1;
+  let right = size - 1;
+  let currentNumber = 1;
 
   while (top <= bottom && left <= right) {
-    for (let i = left; i <= right; i += 1) result[top][i] = num += 1;
+    for (let i = left; i <= right; i += 1) {
+      matrix[top][i] = currentNumber;
+      currentNumber += 1;
+    }
     top += 1;
 
-    for (let i = top; i <= bottom; i += 1) result[i][right] = num += 1;
+    for (let i = top; i <= bottom; i += 1) {
+      matrix[i][right] = currentNumber;
+      currentNumber += 1;
+    }
     right -= 1;
 
     if (top <= bottom) {
-      for (let i = right; i >= left; i -= 1) result[bottom][i] = num += 1;
+      for (let i = right; i >= left; i -= 1) {
+        matrix[bottom][i] = currentNumber;
+        currentNumber += 1;
+      }
       bottom -= 1;
     }
 
     if (left <= right) {
-      for (let i = bottom; i >= top; i -= 1) result[i][left] = num += 1;
+      for (let i = bottom; i >= top; i -= 1) {
+        matrix[i][left] = currentNumber;
+        currentNumber += 1;
+      }
       left += 1;
     }
   }
 
-  return result;
+  return matrix;
 }
 
 /**
@@ -377,19 +390,18 @@ function rotateMatrix(Matrix) {
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
 function sortByAsc(arr) {
-  const sortedArr = [...arr];
-  const n = sortedArr.length;
+  if (arr.length <= 1) return arr;
 
-  for (let i = 0; i < n - 1; i += 1) {
-    for (let j = 0; j < n - i - 1; j += 1) {
-      if (sortedArr[j] > sortedArr[j + 1]) {
-        const temp = sortedArr[j];
-        sortedArr[j] = sortedArr[j + 1];
-        sortedArr[j + 1] = temp;
-      }
-    }
+  const pivot = arr[arr.length - 1];
+  const left = [];
+  const right = [];
+
+  for (let i = 0; i < arr.length - 1; i += 1) {
+    if (arr[i] < pivot) left.push(arr[i]);
+    else right.push(arr[i]);
   }
-  return sortedArr;
+
+  return [...sortByAsc(left), pivot, ...sortByAsc(right)];
 }
 
 /**
@@ -409,19 +421,22 @@ function sortByAsc(arr) {
  *  '012345', 3 => '024135' => '043215' => '031425'
  *  'qwerty', 3 => 'qetwry' => 'qtrewy' => 'qrwtey'
  */
-function shuffleChar(str, iterations) {
-  let shuffledStr = str;
-  for (let i = 0; i < iterations; i += 1) {
-    let even = '';
-    let odd = '';
-    for (let j = 0; j < shuffledStr.length; j += 1) {
-      if (j % 2 === 0) even += shuffledStr[j];
-      else odd += shuffledStr[j];
-    }
-    shuffledStr = even + odd;
+function shuffleChar(str) {
+  const arr = str.split('');
+  let currentIndex = arr.length;
+  let randomIndex;
+
+  while (currentIndex !== 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    [arr[currentIndex], arr[randomIndex]] = [
+      arr[randomIndex],
+      arr[currentIndex],
+    ];
   }
 
-  return shuffledStr;
+  return arr.join('');
 }
 
 /**
